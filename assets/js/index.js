@@ -70,6 +70,44 @@ async function renderizarDatos(){
 
 renderizarDatos();
 
+/* Grafica */
+
+function configuracionGrafica(data){
+    const tipoDeGrafica = "bar";
+    const titulo = "Monedas";
+    const colorDeLinea = "red";
+    const valores = [data.dolar.valor, data.euro.valor, data.uf.valor];
+    const config = {
+        type: tipoDeGrafica,
+        data: {
+            labels: ["Dolar","Euro", "UF"],
+            datasets:[
+                {
+                    label:titulo,
+                    backgroundColor:colorDeLinea,
+                    data:valores
+                }
+            ]
+        }
+        
+    };
+    return config;
+}
+
+async function renderGrafica() {
+    const data = await getAllMoney();
+    const config = configuracionGrafica(data);
+    const chartDOM = document.getElementById("myChart");
+    new Chart(chartDOM, config);
+    }
+    renderGrafica();
+
+
+
+    
+
+
+    
 
 
 
