@@ -13,7 +13,7 @@ function formData(e){
     const tipoMonedas = conversor.options[conversor.selectedIndex].text;  
     switch(tipoMonedas){
         case "dolar":
-            conversionMoneda(clp,moneda,"$");
+            conversionMoneda(clp,moneda,"$");         
             break;
         case "euro":
             conversionMoneda(clp,moneda,"€");
@@ -43,11 +43,9 @@ async function getAllMoney(){
         const data = await request.json();
         return data;
     }catch(error){
-        const span = document.createElement("span");
-        const div = document.querySelector(".conversorMonedas");
-        div.classList.add("error");
-        div.appendChild(span);
-        span.innerHTML = error.message;
+        const span = document.querySelector(".estadoInicial");
+        span.classList.add("error")
+        span.innerHTML = `A ocurrido el siguiente error: ${error.message}`
     }
 }
 
@@ -72,15 +70,91 @@ renderizarDatos();
 
 /* Grafica */
 
-function configuracionGrafica(data){
-    const tipoDeGrafica = "bar";
-    const titulo = "Monedas";
+const tipoMonedas = document.querySelector("#conversor");
+renderGrafica("dolar");
+tipoMonedas.addEventListener("change", ()=>{
+    const tipoMoneda = tipoMonedas.options[tipoMonedas.selectedIndex].text;
+    if(tipoMoneda === "dolar"){
+        renderGrafica("dolar");
+    }else if(tipoMoneda === "euro"){
+        renderGrafica("euro");
+    }else if(tipoMoneda === "uf"){
+        renderGrafica("uf");
+    }
+});
+
+async function verificadorDeMoneda(tipoMoneda){
+    if(tipoMoneda === "dolar"){
+        const info = await getMoneyGrafica("https://mindicador.cl/api/dolar")
+        return info;
+    }else if(tipoMoneda === "euro"){
+        const info = await getMoneyGrafica("https://mindicador.cl/api/euro")
+        return info;   
+    }else if(tipoMoneda === "uf"){
+        const info = await getMoneyGrafica("https://mindicador.cl/api/uf")
+        return info;   
+    }
+
+
+}
+
+async function getMoneyGrafica(url){
+    try{
+        const request = await fetch(url);
+        const info = await request.json();
+        return info;
+    }catch(error){
+        const span = document.querySelector(".estadoInicial");
+        span.classList.add("error")
+        span.innerHTML = `A ocurrido el siguiente error: ${error.message}`
+    }
+  
+}
+
+function formateadorDeFechas(fechas){
+    const fechaOriginal = new Date(fechas);
+    const opcionesDeFormato = { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+    };
+
+    const fechaFormateada = fechaOriginal.toLocaleString('es-ES',               opcionesDeFormato);
+    return fechaFormateada;
+}
+
+function configuracionGrafica(info){
+    const arrayInfo = info.serie;
+    const tipoDeGrafica = "line";
+    const titulo = `Historial últimos 10 días (${info.codigo})`;
     const colorDeLinea = "red";
-    const valores = [data.dolar.valor, data.euro.valor, data.uf.valor];
+    const valores = [
+        arrayInfo[9].valor,
+        arrayInfo[8].valor,
+        arrayInfo[7].valor,
+        arrayInfo[6].valor,
+        arrayInfo[5].valor,
+        arrayInfo[4].valor,
+        arrayInfo[3].valor,
+        arrayInfo[2].valor,
+        arrayInfo[1].valor,
+        arrayInfo[0].valor,
+    ];
     const config = {
         type: tipoDeGrafica,
         data: {
-            labels: ["Dolar","Euro", "UF"],
+            labels: [
+                formateadorDeFechas(arrayInfo[9].fecha),
+                formateadorDeFechas(arrayInfo[8].fecha),
+                formateadorDeFechas(arrayInfo[7].fecha),
+                formateadorDeFechas(arrayInfo[6].fecha),
+                formateadorDeFechas(arrayInfo[5].fecha),
+                formateadorDeFechas(arrayInfo[4].fecha),
+                formateadorDeFechas(arrayInfo[3].fecha),
+                formateadorDeFechas(arrayInfo[2].fecha),
+                formateadorDeFechas(arrayInfo[1].fecha),
+                formateadorDeFechas(arrayInfo[0].fecha),
+            ],
             datasets:[
                 {
                     label:titulo,
@@ -94,13 +168,19 @@ function configuracionGrafica(data){
     return config;
 }
 
-async function renderGrafica() {
-    const data = await getAllMoney();
-    const config = configuracionGrafica(data);
-    const chartDOM = document.getElementById("myChart");
-    new Chart(chartDOM, config);
-    }
-    renderGrafica();
+async function renderGrafica(tipoMoneda){
+    const info = await verificadorDeMoneda(tipoMoneda);
+    const config = configuracionGrafica(info);
+    const chartDOM = document.querySelector("#myChart");
+    const existingChart = Chart.getChart("myChart");
+    if (existingChart) {
+        existingChart.destroy();
+      }
+    new Chart(chartDOM, config);  
+}
+
+
+
 
 
 

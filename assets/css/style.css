@@ -69,7 +69,11 @@ select{
     text-align: center;
 }
 
+.estadoInicial{
+    display: none;
+}
 .error{
+    display: block;
     font-size: 1.5rem;
     text-align: center;
     color: rgb(236, 69, 69);
