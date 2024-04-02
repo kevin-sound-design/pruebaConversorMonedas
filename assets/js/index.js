@@ -28,7 +28,7 @@ function conversionMoneda (clp,moneda,tipoMonedas){
     const respuesta = document.querySelector(".resultado");
     respuesta.innerHTML = "Resultado:"
     if(clp <= 0){
-        alert("ingresa un valor");
+        alert("ingresa un valor valido");
     }else{
         resultado = clp / moneda;
         let resultadoRedondeado = resultado.toFixed(2);
@@ -127,7 +127,7 @@ function configuracionGrafica(info){
     const arrayInfo = info.serie;
     const tipoDeGrafica = "line";
     const titulo = `Historial últimos 10 días (${info.codigo})`;
-    const colorDeLinea = "red";
+    const colorDeLinea = "purple";
     const valores = [
         arrayInfo[9].valor,
         arrayInfo[8].valor,

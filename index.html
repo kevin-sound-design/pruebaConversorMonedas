@@ -4,35 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/normalize.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
 </head>
 <body>
-
-    <h1>Conversor de monedas Nacional</h1>
-
-    <div class="conversorMonedas">
-
-        <form>
-
-            <label for="CLP">Pesos CLP</label>
-            <input type="number" name="CLP" id="CLP">
-            <label for="conversor">Moneda a convertir:</label>
-            <select name="Moneda" id="conversor"></select>
-            <input type="submit" value="Buscar" class="boton">
-
-        </form>
-
-        <h2 class="resultado">Resultado:</h2>
-        <span class="estadoInicial"></span>
-
-    </div>
-
-    <div class="canvas">
-        <canvas id="myChart"></canvas>
-    </div>
-        
-
+    <header>
+        <h1>Conversor de monedas Nacional</h1>
+    </header>
+    <main>
+        <div class="conversorMonedas">
+            <form>
+                <label for="CLP">Pesos CLP</label>
+                <input type="number" name="CLP" id="CLP">
+                <label for="conversor">Moneda a convertir:</label>
+                <select name="Moneda" id="conversor"></select>
+                <input type="submit" value="Buscar" class="boton">
+            </form>
+            <h2 class="resultado">Resultado:</h2>
+            <span class="estadoInicial"></span>
+        </div>
+    
+        <div class="canvas">
+            <canvas id="myChart"></canvas>
+        </div>
+    </main>
     
     <script src="./assets/js/index.js"></script>
 </body>

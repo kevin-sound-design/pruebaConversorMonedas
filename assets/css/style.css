@@ -3,18 +3,24 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;   
-    font-family: sans-serif;
-    
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-
-h1{
+header h1{
     font-size: 3rem;
-    margin-top: 6rem;
     color: white;
+}
+header{
+    width: 100%;
+    height: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    background-color: rgb(107, 22, 204);
 }
 
 .conversorMonedas{
-    background-color: #6C757D;
+    background-color: rgb(107, 22, 204);
     width: 40rem;
     height: 40vh;
     border-radius: 1rem;
@@ -84,4 +90,36 @@ select{
     height: 30vh;
     margin-top: 2rem;
     border-radius: 0.4rem;
+    color: white;
+}
+
+@media screen and (max-width: 428px){
+    header h1{
+        font-size: 1.5rem;
+        color: white;
+    }
+    header{
+        height: 7rem;
+    }
+    main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .conversorMonedas{
+        width: 90%;
+        height: 23rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }         
+    #myChart{
+        background-color: white;
+        height: 30vh;
+        margin-top: 2rem;
+        border-radius: 0.4rem;
+        color: white;
+        width: 100%;
+        margin-bottom: 2rem;
+    } 
 }
